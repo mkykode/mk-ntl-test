@@ -1,12 +1,10 @@
 import React from "react"
 import { Link } from "gatsby"
 // import netlifyIdentity from "netlify-identity-widget"
-
 import Layout from "../components/layout"
 // import Image from "../components/image"
 import SEO from "../components/seo"
 import { useIdentityContext } from "react-netlify-identity"
-console.log(process.env.GATSBY_BASE_URL)
 // netlifyIdentity.init()
 const IndexPage = () => {
   const identity = useIdentityContext()

@@ -5,17 +5,17 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, { Suspense, lazy } from "react"
+import React, { Suspense } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-import {
+import IdentityModal, {
   useIdentityContext,
   // IdentityContextProvider,
 } from "react-netlify-identity-widget"
 import "react-netlify-identity-widget/styles.css"
 import Header from "./header"
 import "./layout.css"
-const IdentityModal = lazy(() => import("react-netlify-identity-widget"))
+// const IdentityModal = lazy(() => import("react-netlify-identity-widget"))
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
@@ -36,7 +36,7 @@ const Layout = ({ children }) => {
       identity.user.user_metadata.name) ||
     "NoName"
 
-  console.log(JSON.stringify(identity))
+  // console.log(JSON.stringify(identity))
   const isLoggedIn = identity && identity.isLoggedIn
 
   return (
@@ -57,12 +57,12 @@ const Layout = ({ children }) => {
           </button>
         </nav>
         <main>{children}</main>
-        <Suspense fallback="loading...">
-          <IdentityModal
-            showDialog={dialog}
-            onCloseDialog={() => setDialog(false)}
-          />
-        </Suspense>
+        {/* <Suspense fallback="loading..."> */}
+        <IdentityModal
+          showDialog={dialog}
+          onCloseDialog={() => setDialog(false)}
+        />
+        {/* </Suspense> */}
       </div>
     </>
   )
