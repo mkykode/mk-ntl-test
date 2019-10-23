@@ -7,4 +7,4 @@
   command = "gatsby build"
 
 [dev]
-  port = "8000"
+  port = 8000
