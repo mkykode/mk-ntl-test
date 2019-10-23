@@ -5,6 +5,9 @@
   # This is where we will look for package.json/.nvmrc/etc.
   publish = "public"
   command = "gatsby build"
+  functions = "functions"
 
 [dev]
   port = 8000
+  command = "gatsby develop"
+  publish = "public"
