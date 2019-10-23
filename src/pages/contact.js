@@ -10,7 +10,7 @@ function encode(data) {
     .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
     .join("&")
 }
-const IndexPage = () => {
+const Contact = () => {
   const [state, setState] = React.useState({})
 
   const handleChange = e => {
@@ -80,4 +80,4 @@ const IndexPage = () => {
     </Layout>
   )
 }
-export default IndexPage
+export default Contact
