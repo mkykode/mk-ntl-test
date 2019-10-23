@@ -39,7 +39,11 @@ const Contact = () => {
         ...state,
       }),
     })
-      .then(() => navigate(form.getAttribute("action")))
+      .then(() => {
+        console.log(state, recaptchaValue)
+
+        navigate(form.getAttribute("action"))
+      })
       .catch(error => alert(error))
   }
   return (
@@ -84,6 +88,7 @@ const Contact = () => {
             <textarea name="message" onChange={handleChange} />
           </label>
         </p>
+        {/* {JSON.stringify(RECAPTCHA_KEY)} */}
         <Recaptcha ref={recaptchaRef} sitekey={RECAPTCHA_KEY} />
         <p>
           <button type="submit">Send</button>
