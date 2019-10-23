@@ -41,6 +41,7 @@ const Contact = () => {
         action="/thanks/"
         data-netlify="true"
         data-netlify-honeypot="bot-field"
+        data-netlify-recaptcha="true"
         onSubmit={handleSubmit}
       >
         {/* The `form-name` hidden field is required to support form submissions without JavaScript */}
@@ -72,6 +73,7 @@ const Contact = () => {
             <textarea name="message" onChange={handleChange} />
           </label>
         </p>
+        <div data-netlify-recaptcha="true"></div>
         <p>
           <button type="submit">Send</button>
         </p>
