@@ -5,21 +5,23 @@ import Layout from "../components/layout"
 // import Image from "../components/image"
 import SEO from "../components/seo"
 const RECAPTCHA_KEY = process.env.GATSBY_APP_SITE_RECAPTCHA_KEY
-// if (typeof RECAPTCHA_KEY === "undefined") {
-//   throw new Error(`
-//   Env var GATSBY_APP_SITE_RECAPTCHA_KEY is undefined!
-//   You probably forget to set it in your Netlify build environment variables.
-//   Make sure to get a Recaptcha key at https://www.netlify.com/docs/form-handling/#custom-recaptcha-2-with-your-own-settings
-//   Note this demo is specifically for Recaptcha v2
-//   `)
-// }
+if (typeof RECAPTCHA_KEY === "undefined") {
+  throw new Error(`
+  Env var GATSBY_APP_SITE_RECAPTCHA_KEY is undefined!
+  You probably forget to set it in your Netlify build environment variables.
+  Make sure to get a Recaptcha key at https://www.netlify.com/docs/form-handling/#custom-recaptcha-2-with-your-own-settings
+  Note this demo is specifically for Recaptcha v2
+  `)
+}
 function encode(data) {
   return Object.keys(data)
     .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
     .join("&")
 }
 const Contact = () => {
-  const [state, setState] = React.useState({})
+  const [state, setState] = React.useState({
+    displayErrors: false,
+  })
   const recaptchaRef = React.createRef()
 
   const handleChange = e => {
@@ -30,21 +32,26 @@ const Contact = () => {
     e.preventDefault()
     const form = e.target
     const recaptchaValue = recaptchaRef.current.getValue()
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({
-        "form-name": form.getAttribute("name"),
-        "g-recaptcha-response": recaptchaValue,
-        ...state,
-      }),
-    })
-      .then(() => {
-        console.log(state, recaptchaValue)
 
-        navigate(form.getAttribute("action"))
+    if (recaptchaValue) {
+      setState({ displayErrors: false })
+      fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({
+          "form-name": form.getAttribute("name"),
+          "g-recaptcha-response": recaptchaValue,
+          ...state,
+        }),
       })
-      .catch(error => alert(error))
+        .then(data => {
+          console.log(data, state, recaptchaValue)
+          navigate(form.getAttribute("action"))
+        })
+        .catch(error => alert(error))
+    } else {
+      setState({ displayErrors: true })
+    }
   }
   return (
     <Layout>
@@ -89,6 +96,12 @@ const Contact = () => {
           </label>
         </p>
         {/* {JSON.stringify(RECAPTCHA_KEY)} */}
+        {state.displayErrors ? (
+          <small style={{ color: "red" }}>
+            There is an error with your captcha validation
+          </small>
+        ) : null}
+
         <Recaptcha ref={recaptchaRef} sitekey={RECAPTCHA_KEY} />
         <p>
           <button type="submit">Send</button>
